@@ -16,7 +16,8 @@ import java.util.Map;
  * Your implementation of MachineService.
  */
 public class MachineServiceImpl implements MachineService<Machine> {
-    private static final Map<String, ? extends MachineProducer<Machine>> MACHINE_PRODUCER =
+    private static final Map<String,
+            ? extends MachineProducer<? extends Machine>> MACHINE_PRODUCERS =
             Map.of(Bulldozer.class.getSimpleName(), new BulldozerProducer(),
                 Truck.class.getSimpleName(), new TruckProducer(),
                 Excavator.class.getSimpleName(), new ExcavatorProducer());
@@ -24,8 +25,8 @@ public class MachineServiceImpl implements MachineService<Machine> {
     @Override
     public List<Machine> getAll(Class<? extends Machine> type) {
         String classType = type.getSimpleName();
-        if (MACHINE_PRODUCER.containsKey(classType)) {
-            return (List<Machine>) MACHINE_PRODUCER.get(classType).get();
+        if (MACHINE_PRODUCERS.containsKey(classType)) {
+            return (List<Machine>) MACHINE_PRODUCERS.get(classType).get();
         }
         return Collections.emptyList();
     }
