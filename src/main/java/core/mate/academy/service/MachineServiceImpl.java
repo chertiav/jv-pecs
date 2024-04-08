@@ -8,8 +8,7 @@ import core.mate.academy.service.producers.BulldozerProducer;
 import core.mate.academy.service.producers.ExcavatorProducer;
 import core.mate.academy.service.producers.MachineProducer;
 import core.mate.academy.service.producers.TruckProducer;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -18,11 +17,9 @@ import java.util.Map;
  */
 public class MachineServiceImpl implements MachineService<Machine> {
     private static final Map<String, ? extends MachineProducer<Machine>> MACHINE_PRODUCER =
-            new HashMap<>() {{
-                    put(Bulldozer.class.getSimpleName(), new BulldozerProducer());
-                    put(Truck.class.getSimpleName(), new TruckProducer());
-                    put(Excavator.class.getSimpleName(), new ExcavatorProducer());
-                }};
+            Map.of(Bulldozer.class.getSimpleName(), new BulldozerProducer(),
+                Truck.class.getSimpleName(), new TruckProducer(),
+                Excavator.class.getSimpleName(), new ExcavatorProducer());
 
     @Override
     public List<Machine> getAll(Class<? extends Machine> type) {
@@ -30,7 +27,7 @@ public class MachineServiceImpl implements MachineService<Machine> {
         if (MACHINE_PRODUCER.containsKey(classType)) {
             return (List<Machine>) MACHINE_PRODUCER.get(classType).get();
         }
-        return new ArrayList<>();
+        return Collections.emptyList();
     }
 
     @Override
@@ -45,6 +42,3 @@ public class MachineServiceImpl implements MachineService<Machine> {
         }
     }
 }
-
-
-
